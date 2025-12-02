@@ -41,4 +41,4 @@
 
     // Additional hardening
     minimal-responses yes;      // reduces amplification factor
-
+    minimal-any yes;
