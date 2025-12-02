@@ -1,0 +1,8 @@
+#! /bin/sh
+
+#	--read-only \
+ip="192.168.1.145"
+docker run --read-only \
+	-m 1g \
+	-p ${ip}:53:53 -p ${ip}:53:53/udp \
+	-it $(cat list) $*

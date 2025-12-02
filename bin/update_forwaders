@@ -1,0 +1,20 @@
+#! /bin/sh
+
+boot_name_servers=${SIMPLE_BOOT_NAME_SERVERS:-8.8.8.8 8.8.4.4 1.1.1.1 1.0.0.1}
+public_resolvers_list=${SIMPLE_RESOLVERS_LIST:-recs.hogshake.net}
+
+for ip in ${boot_name_servers}
+	do
+		dig +short @${ip} ${public_resolvers_list}
+	done | sort -u > /run/fwd.new
+
+if ! cmp -s /run/fwd.new /run/fwd.now
+	then
+		awk 'BEGIN { printf "forwarders { " }
+            { printf "%s; ",$0 }
+			END { print "};" }' /run/fwd.new > /run/named/etc/forwarders.inc
+		mv /run/fwd.new /run/fwd.now
+		chown named: /run/named/etc/forwarders.inc
+	else
+		rm -f /run/fwd.new
+	fi

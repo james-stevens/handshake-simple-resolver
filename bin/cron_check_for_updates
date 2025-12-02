@@ -1,0 +1,15 @@
+#! /bin/sh
+
+/usr/local/bin/update_forwaders
+
+if test /run/fwd.now -nt /run/fwd.prev
+	then
+		logger -t "cron_check_for_updates[$$]" "Forwarders list changed"
+		if named-checkconf -t /run/named -c /etc/named.conf 2>&1 | logger -t "cron_check_for_updates[$$]"
+			then
+				rndc reconfig
+				touch -r /run/fwd.now /run/fwd.prev
+			fi
+	else
+		logger -t "cron_check_for_updates[$$]" "Forwarders list not changed"
+	fi

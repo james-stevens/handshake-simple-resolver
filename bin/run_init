@@ -1,0 +1,29 @@
+#! /bin/sh
+
+mkdir /run/named /run/named/etc /run/named/var
+cp -a /usr/local/etc/named.conf /run/named/etc
+rndc-confgen > /run/rndc.conf
+awk '/^# key /,/^# End of/ { if ($2!="End") print substr($0,3) }' /run/rndc.conf > /run/named/etc/rndc.inc
+
+/usr/local/bin/update_forwaders
+touch -r /run/fwd.now /run/fwd.prev
+
+if test -z "${SIMPLE_REQUIRE_COOKIES}"; then export SIMPLE_REQUIRE_COOKIES="yes"; fi
+/usr/local/bin/envsub /usr/local/etc/rate-limit.inc > /run/named/etc/rate-limit.inc
+
+if test -z "${SIMPLE_ALLOWED_SUBNETS}"
+	then
+		echo "acl allowed-nets { 192.168.0.0/16; 10.0.0.0/8; 172.16.0.0/12; };"
+	else
+		echo "acl allowed-nets { ${SIMPLE_ALLOWED_SUBNETS}; };"
+	fi > /run/named/etc/allowed.inc
+
+chown -R named: /run/named
+
+if named-checkconf -t /run/named -c /etc/named.conf
+	then
+		exec /sbin/init
+	else
+		echo "ERROR: bad named config"
+		sleep 10000
+	fi

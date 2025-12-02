@@ -1,0 +1,5 @@
+#! /bin/bash
+
+date +%Y%m%d.%H%M > build.txt
+docker pull alpine:3.22
+docker image build $* -t $(cat list) .
