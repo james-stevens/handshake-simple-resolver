@@ -2,10 +2,12 @@
 HandShake Caching resolver that uses other people's public Handshake resolvers.
 In DNS terminology this would be called a "caching stub resolver".
 
-This is a small and simple Handshake ware DNS resolver. It does not resolve names itself, but uses
+This is a small and simple Handshake aware DNS resolver. It does not resolve names itself, but uses
 other public Handshake resolvers, but caches the answers for the TTL.
 
-The list of public resolvers is taken from the IP Addresses on the host name `recs.hogshake.net`, but you can
+It is only 28Mb and is all you need to have a local Handshake Resolver.
+
+The list of public resolvers it uses is taken from the IP Addresses on the host name `recs.hogshake.net`, but you can
 override this.
 
 It has some anti-abuse including [rate-limiting](etc/rate-limit.inc).
