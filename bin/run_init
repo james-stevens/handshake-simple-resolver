@@ -1,12 +1,12 @@
 #! /bin/sh
 
-mkdir /run/named /run/named/etc /run/named/var
+mkdir /run/named /run/named/etc /run/named/var /run/tmp
 cp -a /usr/local/etc/named.conf /run/named/etc
 rndc-confgen > /run/rndc.conf
 awk '/^# key /,/^# End of/ { if ($2!="End") print substr($0,3) }' /run/rndc.conf > /run/named/etc/rndc.inc
 
 /usr/local/bin/update_forwaders
-touch -r /run/fwd.now /run/fwd.prev
+rn -f /run/need_reconfig
 
 if test -z "${SIMPLE_REQUIRE_COOKIES}"; then export SIMPLE_REQUIRE_COOKIES="yes"; fi
 /usr/local/bin/envsub /usr/local/etc/rate-limit.inc > /run/named/etc/rate-limit.inc
@@ -25,5 +25,5 @@ if named-checkconf -t /run/named -c /etc/named.conf
 		exec /sbin/init
 	else
 		echo "ERROR: bad named config"
-		sleep 10000
+		exit 1
 	fi
