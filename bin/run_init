@@ -13,9 +13,9 @@ if test -z "${SIMPLE_REQUIRE_COOKIES}"; then export SIMPLE_REQUIRE_COOKIES="yes"
 
 if test -z "${SIMPLE_ALLOWED_SUBNETS}"
 	then
-		echo "acl allowed-nets { 192.168.0.0/16; 10.0.0.0/8; 172.16.0.0/12; };"
+		echo "acl allowed-nets { 192.168.0.0/16; 10.0.0.0/8; 172.16.0.0/12; 127.0.0.0/8; };"
 	else
-		echo "acl allowed-nets { ${SIMPLE_ALLOWED_SUBNETS}; };"
+		echo "acl allowed-nets { ${SIMPLE_ALLOWED_SUBNETS}; 127.0.0.0/8; };"
 	fi > /run/named/etc/allowed.inc
 
 chown -R named: /run/named
