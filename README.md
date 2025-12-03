@@ -22,7 +22,7 @@ All environmant variables are optional and have sensible default values.
 | `SIMPLE_BOOT_NAME_SERVERS` | Space separated list of IP Address to use to resolve the `SIMPLE_RESOLVERS_HOST` name | `8.8.8.8 8.8.4.4 1.1.1.1 1.0.0.1`
 | `SIMPLE_RESOLVERS_LIST` | Instead of getting the public resolvers list from a host nane, just use this list instead, SEMI-COLON separate list of IP Addresses | None
 
-NOTE: Whatever list of subnets you give in `SIMPLE_ALLOWED_SUBNETS` the localhost subnet (`127.0.0.0/8`) will always get automatically added.
+NOTE: Whatever list of subnets you give in `SIMPLE_ALLOWED_SUBNETS` the localhost subnet (`127.0.0.0/8`) will always be automatically added.
 
 If you want anybody to be able to use your resolver, set `SIMPLE_ALLOWED_SUBNETS` to `any`.
 
